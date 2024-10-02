@@ -1,5 +1,7 @@
 package com.example.zomatoclone.ui.components
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.VerticalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -23,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -36,19 +41,21 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.zomatoclone.R
 import com.example.zomatoclone.ui.theme.CustomTheme
 import com.example.zomatoclone.ui.theme.ZomatoCloneTheme
+import kotlinx.coroutines.delay
 
 @Preview(backgroundColor = 0xFF000000, showBackground = true)
 @Composable
 private fun Preview() {
     ZomatoCloneTheme {
         Column(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(30.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -56,7 +63,24 @@ private fun Preview() {
                 modifier = Modifier.background(Color.White),
             ) {}
             AppSearchBar(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    TextAnimation(
+                        listOf(
+                            "Search \"ice cream\"",
+                            "Search \"cake\"",
+                            "Search \"ice cream\"",
+//                            "Search \"chai samosa\"",
+//                            "Search \"pizza\"",
+//                            "Search \"biryani\"",
+//                            "Search \"ice cream\"",
+//                            "Search \"cake\"",
+//                            "Search \"chai samosa\"",
+//                            "Search \"pizza\"",
+//                            "Search \"biryani\"",
+                        )
+                    )
+                }
             )
             var currentIndex by remember {
                 mutableIntStateOf(0)
@@ -130,7 +154,8 @@ fun AppAddressPickerTopBar(
 fun AppSearchBar(
     modifier: Modifier = Modifier,
     color: Color = CustomTheme.colors.red,
-    shape: Shape = CustomTheme.shape.card
+    shape: Shape = CustomTheme.shape.card,
+    placeholder: @Composable () -> Unit = {}
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Shadowed(modifier, offsetY = 0.dp, blurRadius = 4.dp) {
@@ -157,11 +182,11 @@ fun AppSearchBar(
                 visualTransformation = VisualTransformation.None,
                 interactionSource = interactionSource,
                 placeholder = {
-                    Text(
-                        text = "Search \"biryani\"",
-                        style = CustomTheme.typography.bodyLarge,
-                        color = CustomTheme.colors.tertiaryText
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        placeholder.invoke()
+                    }
                 },
                 contentPadding = PaddingValues(0.dp),
                 container = {},
@@ -337,4 +362,115 @@ fun AppRecommendedToggle(
             }
         }
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun TextAnimation(texts: List<String>, delayMillis: Int = 1500, durationMillis: Int = 800) {
+    val pagerState = rememberPagerState {
+        texts.size
+    }
+
+    LaunchedEffect(key1 = texts) {
+        while (true) {
+            if (pagerState.currentPage == texts.size - 1) {
+                pagerState.scrollToPage(0)
+            } else {
+                delay(1000)
+                pagerState.animateScrollToPage(
+                    (pagerState.currentPage + 1),
+                    animationSpec = tween(1000)
+                )
+            }
+        }
+    }
+
+    VerticalPager(
+        modifier = Modifier.height(45.dp),
+        state = pagerState, userScrollEnabled = false,
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            modifier = Modifier.padding(vertical = 15.dp),
+            text = texts[it],
+            style = CustomTheme.typography.bodyLarge,
+            color = CustomTheme.colors.tertiaryText,
+            textAlign = TextAlign.Start
+        )
+    }
+
+//    var currentIndex by rememberSaveable {
+//        mutableIntStateOf(0)
+//    }
+//
+//    var nextIndex by rememberSaveable {
+//        mutableIntStateOf(1)
+//    }
+//
+//    val transition = rememberInfiniteTransition(label = "")
+//    val currentItemOffset = transition.animateFloat(
+//        initialValue = 0f,
+//        targetValue = -50f,
+//        animationSpec = infiniteRepeatable(
+//            animation = tween(
+//                durationMillis = durationMillis,
+//                delayMillis = delayMillis,
+//                easing = LinearEasing
+//            )
+//        ),
+//        label = "",
+//    )
+//    val nextItemOffset by transition.animateFloat(
+//        initialValue = 50f,
+//        targetValue = 0f,
+//        animationSpec = infiniteRepeatable(
+//            animation = tween(
+//                durationMillis = durationMillis,
+//                delayMillis = delayMillis,
+//                easing = LinearEasing
+//            )
+//        ),
+//        label = "",
+//    )
+//    val currentItemAlpha by transition.animateFloat(
+//        initialValue = 1f,
+//        targetValue = 0f,
+//        animationSpec = infiniteRepeatable(
+//            animation = tween(
+//                durationMillis = durationMillis,
+//                delayMillis = delayMillis,
+//                easing = LinearEasing
+//            )
+//        ),
+//        label = "",
+//    )
+//
+//    LaunchedEffect(key1 = texts) {
+//        while (true) {
+//            delay(delayMillis+durationMillis.toLong()-20)
+//            currentIndex = nextIndex
+//            nextIndex = (nextIndex+1)%texts.size
+//        }
+//    }
+//
+//    Box(
+//        modifier = Modifier
+//            .height(30.dp)
+//            .fillMaxWidth(),
+//        contentAlignment = Alignment.TopStart
+//    ) {
+//        Text(
+//            modifier = Modifier.offset(y = currentItemOffset.value.dp).alpha(currentItemAlpha),
+//            text = texts[currentIndex],
+//            fontSize = 24.sp,
+//            color = Color.White
+//        )
+//
+//        Text(
+//            modifier = Modifier.offset(y = nextItemOffset.dp),
+//            text = texts[nextIndex],
+//            fontSize = 24.sp,
+//            color = Color.White
+//        )
+//    }
 }
