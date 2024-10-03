@@ -1,13 +1,16 @@
 package com.example.zomatoclone.ui.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithContent
@@ -104,6 +107,16 @@ fun Modifier.onClick(onClick: () -> Unit): Modifier {
     }
 }
 
+fun Modifier.onClickNoRipple(onClick: () -> Unit) = composed {
+    val interactionSource = remember { MutableInteractionSource() }
+    this.clickable(
+        interactionSource = interactionSource,
+        indication = null
+    ) {
+        onClick()
+    }
+}
+
 @Composable
 fun Height(value: Int) {
     Spacer(modifier = Modifier.height(value.dp))
@@ -113,3 +126,4 @@ fun Height(value: Int) {
 fun Width(value: Int) {
     Spacer(modifier = Modifier.width(value.dp))
 }
+
