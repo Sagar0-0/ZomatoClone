@@ -32,19 +32,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.zomatoclone.R
-import com.example.zomatoclone.ui.components.AppAddressPickerTopBar
-import com.example.zomatoclone.ui.components.AppAssistChip
-import com.example.zomatoclone.ui.components.AppHomeBottomBar
-import com.example.zomatoclone.ui.components.AppRecommendedToggle
-import com.example.zomatoclone.ui.components.AppRestaurantCardItemLarge
-import com.example.zomatoclone.ui.components.AppRestaurantCardItemSmall
-import com.example.zomatoclone.ui.components.AppSearchBar
-import com.example.zomatoclone.ui.components.AppSortChip
-import com.example.zomatoclone.ui.components.AppVegModeToggle
-import com.example.zomatoclone.ui.components.Height
-import com.example.zomatoclone.ui.components.Width
-import com.example.zomatoclone.ui.theme.CustomTheme
-import com.example.zomatoclone.ui.theme.ZomatoCloneTheme
+import com.sagar.designsystem.CustomTheme
+import com.sagar.designsystem.ZomatoCloneTheme
+import com.sagar.designsystem.molecules.AppAddressPickerTopBar
+import com.sagar.designsystem.molecules.AppAssistChip
+import com.sagar.designsystem.molecules.AppHomeBottomBar
+import com.sagar.designsystem.molecules.AppRecommendedToggle
+import com.sagar.designsystem.molecules.AppSearchBar
+import com.sagar.designsystem.molecules.AppSortChip
+import com.sagar.designsystem.molecules.AppVegModeToggle
+import com.sagar.designsystem.templates.AppRestaurantCardItemLarge
+import com.sagar.designsystem.templates.AppRestaurantCardItemSmall
+import com.sagar.designsystem.utils.Height
+import com.sagar.designsystem.utils.Width
 
 @Preview
 @Composable
@@ -127,7 +127,7 @@ fun RestaurantsSection() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
-                AppSortChip {
+                AppSortChip() {
 
                 }
             }

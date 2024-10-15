@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,8 +41,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.zomatoclone.ui.theme.CustomTheme
-import com.example.zomatoclone.ui.theme.ZomatoCloneTheme
+import com.sagar.designsystem.CustomTheme
+import com.sagar.designsystem.ZomatoCloneTheme
+import com.sagar.designsystem.molecules.AppButtonFilled
+import com.sagar.designsystem.utils.onClickNoRipple
 import kotlinx.coroutines.delay
 
 
@@ -56,6 +57,7 @@ private fun Preview() {
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            AppButtonFilled("testing") { }
             var isDialogVisible by rememberSaveable { mutableStateOf(false) }
             AppDialogLayout(
                 modifier = Modifier.fillMaxSize(),

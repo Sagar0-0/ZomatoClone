@@ -16,8 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://jitpack.io") // Add this
+        }
     }
 }
 
 rootProject.name = "ZomatoClone"
 include(":app")
+include(":designsystem")
